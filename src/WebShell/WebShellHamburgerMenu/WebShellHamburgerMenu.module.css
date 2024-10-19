@@ -1,0 +1,140 @@
+.hamburgerMenu {
+  position: relative;
+}
+
+.hamburgerButton {
+  background: transparent; /* Transparent background */
+  border: none; /* Remove border */
+  cursor: pointer; /* Pointer cursor */
+  padding: 10px; /* Padding for click area */
+  padding-left: 5px;
+  margin-top: 3px;
+  border-radius: 5px; /* Rounded corners */
+  transition: background 0.3s ease; /* Smooth background transition */
+}
+
+.hamburgerButton:hover {
+  background: rgba(255, 255, 255, 0.5); /* Lighter background on hover */
+}
+
+.hamburgerIcon,
+.backArrow {
+  display: inline-block; /* Inline block for better layout */
+  width: 30px; /* Width of the icon */
+  height: 3px; /* Height of the lines */
+  background-color: #333; /* Icon color */
+  transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transition */
+}
+
+.hamburgerIcon {
+  position: relative; /* Positioning for stacking */
+  margin: 5px 0; /* Space between lines */
+}
+
+.hamburgerIcon:before,
+.hamburgerIcon:after {
+  content: ""; /* Create pseudo-elements for the two additional lines */
+  display: block;
+  width: 100%;
+  height: 100%; /* Same height */
+  background-color: inherit; /* Same color as the main line */
+  position: absolute; /* Positioning to stack */
+  transition: transform 0.3s ease; /* Smooth transformation */
+}
+
+.hamburgerIcon:before {
+  top: -10px; /* Position above */
+}
+
+.hamburgerIcon:after {
+  top: 10px; /* Position below */
+}
+
+.menu {
+  position: fixed; /* Keep the menu fixed on the left */
+  top: 0; /* Start from the top */
+  left: -250px; /* Start off-screen */
+  height: 100vh; /* Full height */
+  width: 250px; /* Fixed width */
+  background: rgba(255, 255, 255, 0.8); /* Background color for visibility */
+  overflow-y: auto; /* Allow scrolling if necessary */
+  transition: left 0.3s ease; /* Slide animation */
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+  z-index: 1000; /* Ensure it sits above content */
+}
+
+.menu.collapsed {
+  left: -250px; /* Keep it collapsed */
+  box-shadow: 40px 0 10px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+}
+
+.menu.open {
+  left: 0; /* Slide in */
+}
+
+.menuItem {
+  list-style: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background 0.2s ease; /* Smooth background transition */
+}
+
+.hoveredItem {
+  background: rgba(255, 255, 255, 0.3); /* Light background on hover */
+  color: #007bff; /* Change text color on hover */
+}
+
+.thing {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.subMenu {
+  list-style-type: none; /* Remove bullets from submenu items */
+  padding-left: 0; /* Remove any default padding */
+  overflow: hidden; /* Hide overflowing content */
+  transition: max-height 0.3s ease-in-out; /* Smooth transition for height */
+  max-height: 0; /* Start with a max height of 0 */
+  cursor: pointer;
+}
+
+.subMenu.open {
+  padding: 10px 0; /* Add padding when open */
+  padding-left: 20px; /* Indent sub-menu items */
+}
+
+.icon {
+  margin-right: 8px; /* Space between icon and label */
+  font-size: 16px; /* Adjust icon size */
+}
+
+.searchBox {
+  width: 100%; /* Full width */
+  padding: 10px; /* Padding for the input */
+  border: 1px solid #ccc; /* Border for the input */
+  border-radius: 4px; /* Rounded corners */
+  margin: 10px 0; /* Margin for spacing */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.searchBox:focus {
+  outline: none; /* Remove default outline */
+  border-color: #007bff; /* Change border color on focus */
+}
+
+.searchBar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 20px;
+}
+
+.leftArrow {
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent; /* Adjust the size */
+  border-bottom: 15px solid transparent; /* Adjust the size */
+  border-right: 15px solid #007bff;
+  display: inline-block; /* Aligns with text */
+}

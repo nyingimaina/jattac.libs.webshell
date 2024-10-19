@@ -1,0 +1,57 @@
+.textBoxWrapper {
+    position: relative;
+    margin-bottom: 1rem; /* Space between inputs */
+}
+
+.textBox {
+    width: 100%; /* Default to full width */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s ease; /* Transition for border color on focus */
+}
+
+.textBox:focus {
+    border-color: #007bff; /* Change border color on focus */
+}
+
+.validationMessage {
+    color: #d9534f; /* Error message color */
+    font-size: 0.9rem; /* Smaller font for validation message */
+    position: absolute;
+    bottom: -20px; /* Position below the input */
+    right: 0; /* Align to the right */
+    opacity: 0; /* Initially hidden */
+    transform: translateX(0); /* Initial transform */
+    animation: fadeIn 0.3s forwards; /* Fade-in animation */
+}
+
+.validationMessage.show {
+    opacity: 1; /* Show the message */
+    animation: shake 0.5s forwards; /* Shake animation */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px); /* Slight upward movement */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    10% { transform: translateX(-3px); }
+    20% { transform: translateX(3px); }
+    30% { transform: translateX(-3px); }
+    40% { transform: translateX(3px); }
+    50% { transform: translateX(-3px); }
+    60% { transform: translateX(3px); }
+    70% { transform: translateX(-3px); }
+    80% { transform: translateX(3px); }
+    90% { transform: translateX(-3px); }
+    100% { transform: translateX(0); }
+}

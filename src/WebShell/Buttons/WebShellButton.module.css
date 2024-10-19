@@ -1,0 +1,52 @@
+/* formButton.module.css */
+
+.formButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .formButtonPositive {
+    background-color: #4CAF50; /* Green */
+    color: white;
+  }
+  
+  .formButtonPositive:hover {
+    background-color: #45a049; /* Darker green */
+    transform: scale(1.05); /* Scale effect */
+    box-shadow: 0 4px 15px rgba(0, 128, 0, 0.3); /* Soft shadow */
+  }
+  
+  .formButtonNegative {
+    background-color: #F44336; /* Red */
+    color: white;
+  }
+  
+  .formButtonNegative:hover {
+    background-color: #e53935; /* Darker red */
+    transform: scale(1.05); /* Scale effect */
+    box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3); /* Soft shadow */
+  }
+  
+  .formButtonNeutral {
+    background-color: #9E9E9E; /* Gray */
+    color: white;
+  }
+  
+  .formButtonNeutral:hover {
+    background-color: #8d8d8d; /* Darker gray */
+    transform: scale(1.05); /* Scale effect */
+    box-shadow: 0 4px 15px rgba(128, 128, 128, 0.3); /* Soft shadow */
+  }
+  
+  .formButtonDisabled {
+    opacity: 0.5; /* Make disabled buttons appear faded */
+    cursor: not-allowed; /* Change cursor for disabled buttons */
+    pointer-events: none;
+  }
+
+
+  
