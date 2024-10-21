@@ -34,7 +34,7 @@ export default class SignedOut extends PureComponent<IProps, IState> {
 
     const signInResult = this.props.onSignIn(this.state.credentials);
     if (signInResult) {
-      login({ username: signInResult.username });
+      login(signInResult);
     }
   };
 

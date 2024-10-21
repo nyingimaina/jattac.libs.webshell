@@ -1,6 +1,6 @@
 // contexts/UserContext.tsx
-import React, { createContext, ReactNode } from "react";
-import IWebShellUser from "../SignedOut/Data/IWebShellUser";
+import React, { createContext, ReactNode } from 'react';
+import IWebShellUser from '../SignedOut/Data/IWebShellUser';
 
 // Define the context value type
 export interface WebShellUserContextType {
@@ -10,9 +10,7 @@ export interface WebShellUserContextType {
 }
 
 // Create the context with a default value (use null assertions since it will be provided later)
-export const WebShellUserContext = createContext<
-  WebShellUserContextType | undefined
->(undefined);
+export const WebShellUserContext = createContext<WebShellUserContextType | undefined>(undefined);
 
 // Define the provider's props type
 interface UserProviderProps {
@@ -20,10 +18,7 @@ interface UserProviderProps {
 }
 
 // Create the provider class component
-export class UserProvider extends React.Component<
-  UserProviderProps,
-  WebShellUserContextType
-> {
+export class UserProvider extends React.Component<UserProviderProps, WebShellUserContextType> {
   constructor(props: UserProviderProps) {
     super(props);
     this.state = {
@@ -34,7 +29,7 @@ export class UserProvider extends React.Component<
   }
 
   componentDidMount() {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = localStorage.getItem('user');
     if (storedUser) {
       this.setState({ user: JSON.parse(storedUser) });
     }
@@ -43,20 +38,16 @@ export class UserProvider extends React.Component<
   // Login method
   login = (userData: IWebShellUser) => {
     this.setState({ user: userData });
-    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem('user', JSON.stringify(userData));
   };
 
   // Logout method
   logout = () => {
     this.setState({ user: null });
-    localStorage.removeItem("user");
+    localStorage.removeItem('user');
   };
 
   render() {
-    return (
-      <WebShellUserContext.Provider value={this.state}>
-        {this.props.children}
-      </WebShellUserContext.Provider>
-    );
+    return <WebShellUserContext.Provider value={this.state}>{this.props.children}</WebShellUserContext.Provider>;
   }
 }
