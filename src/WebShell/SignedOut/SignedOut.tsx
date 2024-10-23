@@ -9,7 +9,7 @@ import IWebShellUser from './Data/IWebShellUser';
 import TextboxTypes from '../Textbox/TextboxTypes';
 
 interface IProps {
-  onSignIn: (credentials: IWebShellCredentials) => IWebShellUser | undefined;
+  onSignInAsync: (credentials: IWebShellCredentials) => Promise<IWebShellUser | undefined>;
   usernameType: TextboxTypes;
 }
 
@@ -29,10 +29,10 @@ export default class SignedOut extends PureComponent<IProps, IState> {
     };
   }
 
-  handleLogin = () => {
+  handleLogin = async () => {
     const { login } = this.context as WebShellUserContextType;
 
-    const signInResult = this.props.onSignIn(this.state.credentials);
+    const signInResult = await this.props.onSignInAsync(this.state.credentials);
     if (signInResult) {
       login(signInResult);
     }
@@ -46,7 +46,7 @@ export default class SignedOut extends PureComponent<IProps, IState> {
     return (
       <div className={`${styles.formWidth} ${formStyles.formContainer}`}>
         <h2 className={formStyles.formTitle}>Sign In</h2>
-        <form>
+        
           <label className={formStyles.formLabel} htmlFor="name">
             Username
           </label>
@@ -87,12 +87,12 @@ export default class SignedOut extends PureComponent<IProps, IState> {
             <WebShellButton
               buttonType="positive"
               disabled={this.canSubmit === true ? false : true}
-              onClick={this.handleLogin}
+              onClick={async () => await this.handleLogin()}
             >
               Sign In
             </WebShellButton>
           </div>
-        </form>
+        
       </div>
     );
   }

@@ -10,10 +10,11 @@ import WebShellButton from '../Buttons/WebShellButton';
 
 interface IProps<TMenuId> {
   children: ReactNode;
-  onSignIn: (credentials: IWebShellCredentials) => IWebShellUser | undefined;
   usernameType: TextboxTypes;
   menuItems?: Omit<MenuItem<TMenuId>, 'id'>[];
-  onBeforeSignOut: () => boolean;
+
+  onSignInAsync: (credentials: IWebShellCredentials) => Promise<IWebShellUser | undefined>;
+  onBeforeSignOutAsync: () => Promise<boolean>;
 }
 
 export default class WebShell<TMenuId> extends PureComponent<IProps<TMenuId>> {
@@ -43,8 +44,8 @@ export default class WebShell<TMenuId> extends PureComponent<IProps<TMenuId>> {
       node: (
         <WebShellButton
           buttonType="negative"
-          onClick={() => {
-            if (this.props.onBeforeSignOut()) {
+          onClick={async () => {
+            if (await this.props.onBeforeSignOutAsync()) {
               const { logout } = this.context as WebShellUserContextType;
               logout();
             }
