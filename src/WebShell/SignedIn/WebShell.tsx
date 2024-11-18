@@ -15,6 +15,7 @@ interface IProps<TMenuId> {
   hideSignOut?: boolean;
   onSignInAsync: (credentials: IWebShellCredentials) => Promise<IWebShellUser | undefined>;
   onBeforeSignOutAsync: () => Promise<boolean>;
+  iconColor?: string;
 }
 
 export default class WebShell<TMenuId> extends PureComponent<IProps<TMenuId>> {
@@ -66,12 +67,14 @@ export default class WebShell<TMenuId> extends PureComponent<IProps<TMenuId>> {
     return (
       <div className={styles.container}>
         <WebShellHamburgerMenu
+        
           onItemClick={(e) => {
             if (e.id === 'logout') {
               logout();
             }
           }}
           items={this.menuItems}
+          
         />
         <div className={styles.workspace}>{this.props.children}</div>
       </div>

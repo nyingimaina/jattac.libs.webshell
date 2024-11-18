@@ -17,6 +17,7 @@ export type MenuItem<TId> = {
 type WebShellHamburgerMenuProps<TId> = {
   items: MenuItem<TId>[];
   onItemClick: (args: { id: TId; hasChildren: boolean }) => void; // Callback for when a menu item is clicked
+  iconColor?: string;
 };
 
 type WebShellHamburgerMenuState<TId> = {
@@ -44,7 +45,7 @@ class WebShellHamburgerMenu<TId> extends React.Component<
       hoveredId: null, // Initially, no item is hovered
       searchQuery: '', // Initially, the search query is empty
       backgroundColor: 'rgba(255, 255, 255, 0.8)', // Default frosted glass effect
-      iconColor: '#333', // Default icon color
+      iconColor: this.props.iconColor ?? '#333', // Default icon color
     };
     this.menuRef = React.createRef(); // Initialize the ref for the menu
     this.searchInputRef = React.createRef(); // Initialize the ref for the search input
