@@ -12,7 +12,7 @@ interface IProps<TMenuId> {
   children: ReactNode;
   usernameType: TextboxTypes;
   menuItems?: Omit<MenuItem<TMenuId>, 'id'>[];
-
+  hideSignOut?: boolean;
   onSignInAsync: (credentials: IWebShellCredentials) => Promise<IWebShellUser | undefined>;
   onBeforeSignOutAsync: () => Promise<boolean>;
 }
@@ -39,22 +39,24 @@ export default class WebShell<TMenuId> extends PureComponent<IProps<TMenuId>> {
       menuItem.id = ++id + '';
       return menuItem;
     });
-    menuItems.push({
-      id: ++id + '',
-      node: (
-        <WebShellButton
-          buttonType="negative"
-          onClick={async () => {
-            if (await this.props.onBeforeSignOutAsync()) {
-              const { logout } = this.context as WebShellUserContextType;
-              logout();
-            }
-          }}
-        >
-          Sign Out
-        </WebShellButton>
-      ),
-    });
+    if (this.props.hideSignOut !== true) {
+      menuItems.push({
+        id: ++id + '',
+        node: (
+          <WebShellButton
+            buttonType="negative"
+            onClick={async () => {
+              if (await this.props.onBeforeSignOutAsync()) {
+                const { logout } = this.context as WebShellUserContextType;
+                logout();
+              }
+            }}
+          >
+            Sign Out
+          </WebShellButton>
+        ),
+      });
+    }
     return menuItems;
   }
 

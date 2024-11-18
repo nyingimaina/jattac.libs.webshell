@@ -11,6 +11,11 @@
   margin-top: 3px;
   border-radius: 5px; /* Rounded corners */
   transition: background 0.3s ease; /* Smooth background transition */
+
+  position: fixed; /* Make it fixed */
+  top: 20px; /* Adjust this value for vertical placement */
+  left: 20px; /* Adjust this value for horizontal placement */
+  z-index: 2000; /* Make sure it's on top of other elements */
 }
 
 .hamburgerButton:hover {
@@ -23,7 +28,9 @@
   width: 30px; /* Width of the icon */
   height: 3px; /* Height of the lines */
   background-color: #333; /* Icon color */
-  transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transition */
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease; /* Smooth transition */
 }
 
 .hamburgerIcon {
@@ -33,7 +40,7 @@
 
 .hamburgerIcon:before,
 .hamburgerIcon:after {
-  content: ""; /* Create pseudo-elements for the two additional lines */
+  content: ''; /* Create pseudo-elements for the two additional lines */
   display: block;
   width: 100%;
   height: 100%; /* Same height */
@@ -64,7 +71,7 @@
 }
 
 .menu.collapsed {
-  left: -250px; /* Keep it collapsed */
+  left: -100%; /* Push the menu completely off-screen */
   box-shadow: 40px 0 10px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
 }
 
@@ -87,6 +94,10 @@
 .thing {
   padding: 10px;
   cursor: pointer;
+}
+
+.thing.collapsed {
+  padding: 0; /* Apply padding 0 when collapsed */
 }
 
 .subMenu {
@@ -137,4 +148,41 @@
   border-bottom: 15px solid transparent; /* Adjust the size */
   border-right: 15px solid #007bff;
   display: inline-block; /* Aligns with text */
+}
+
+/* Style for the search box */
+.searchBox {
+  width: 100%;
+  padding: 8px 30px 8px 10px; /* Padding for text and clear icon */
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.searchBox:focus {
+  border-color: #007bff; /* Highlight the border when focused */
+}
+
+/* Container for the search input and clear icon */
+.searchBoxContainer {
+  position: relative;
+  width: 100%;
+}
+
+/* Style for the clear icon */
+.clearIcon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #aaa;
+  transition: color 0.3s;
+}
+
+.clearIcon:hover {
+  color: #333; /* Change color on hover */
 }

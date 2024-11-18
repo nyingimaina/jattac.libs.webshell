@@ -1,15 +1,15 @@
-.container{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
 }
-.workspace{
-    margin-left: 5px;
+.workspace {
+  margin-left: 5px;
 }
 
-.signedOut{
-    display: flex;
-    height: 100vh;
-    align-items: center;
-    justify-content: center;
+.signedOut {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
 }
