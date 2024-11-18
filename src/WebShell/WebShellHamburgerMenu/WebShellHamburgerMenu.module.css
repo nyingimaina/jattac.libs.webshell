@@ -67,7 +67,7 @@
   overflow-y: auto; /* Allow scrolling if necessary */
   transition: left 0.3s ease; /* Slide animation */
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
-  z-index: 1000; /* Ensure it sits above content */
+  z-index: 2001; /* Ensure it sits above hamburger menu */
 }
 
 .menu.collapsed {

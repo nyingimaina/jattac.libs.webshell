@@ -13,3 +13,8 @@
   align-items: center;
   justify-content: center;
 }
+
+.signOutButton {
+  width: 100%; /* Make the button fill the width of its parent */
+  display: block; /* Ensures the button behaves like a block element, taking full width */
+}

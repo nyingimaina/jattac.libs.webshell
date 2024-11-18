@@ -45,6 +45,7 @@ export default class WebShell<TMenuId> extends PureComponent<IProps<TMenuId>> {
         node: (
           <WebShellButton
             buttonType="negative"
+            className={styles.signOutButton}
             onClick={async () => {
               if (await this.props.onBeforeSignOutAsync()) {
                 const { logout } = this.context as WebShellUserContextType;
