@@ -18,6 +18,8 @@ type WebShellHamburgerMenuProps<TId> = {
   items: MenuItem<TId>[];
   onItemClick: (args: { id: TId; hasChildren: boolean }) => void; // Callback for when a menu item is clicked
   iconColor?: string;
+
+  hideSearch?: boolean;
 };
 
 type WebShellHamburgerMenuState<TId> = {
@@ -74,7 +76,7 @@ class WebShellHamburgerMenu<TId> extends React.Component<
 
   updateBackgroundColor = () => {
     const bgColor = window.getComputedStyle(document.body).backgroundColor;
-    const color = this.calculateContrastColor(bgColor);
+    const color = this.props.iconColor ?? this.calculateContrastColor(bgColor);
 
     this.setState({
       backgroundColor: bgColor === 'rgba(0, 0, 0, 0)' ? 'rgba(255, 255, 255, 0.9)' : bgColor,
@@ -278,24 +280,26 @@ class WebShellHamburgerMenu<TId> extends React.Component<
                   }}
                   className={styles.leftArrow}
                 />
-                <div className={styles.searchBoxContainer}>
-                  <input
-                    type="text"
-                    ref={this.searchInputRef} // Attach ref for focusing
-                    className={styles.searchBox}
-                    placeholder="Search..."
-                    value={searchQuery}
-                    onChange={this.handleSearchChange} // Update search query on input change
-                  />
-                  {searchQuery && (
-                    <span
-                      className={styles.clearIcon}
-                      onClick={this.handleClearClick} // Clear the search box on click
-                    >
-                      ✖
-                    </span>
-                  )}
-                </div>
+                {this.props.hideSearch === true ? null : (
+                  <div className={styles.searchBoxContainer}>
+                    <input
+                      type="text"
+                      ref={this.searchInputRef} // Attach ref for focusing
+                      className={styles.searchBox}
+                      placeholder="Search..."
+                      value={searchQuery}
+                      onChange={this.handleSearchChange} // Update search query on input change
+                    />
+                    {searchQuery && (
+                      <span
+                        className={styles.clearIcon}
+                        onClick={this.handleClearClick} // Clear the search box on click
+                      >
+                        ✖
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
             </li>
           )}
