@@ -10,28 +10,39 @@ import WebShellButton from '../Buttons/WebShellButton';
 
 interface IProps<TMenuId> {
   children: ReactNode;
-  usernameType: TextboxTypes;
   menuItems?: Omit<MenuItem<TMenuId>, 'id'>[];
-  hideSignOut?: boolean;
   hideSearch?: boolean;
-  onSignInAsync: (credentials: IWebShellCredentials) => Promise<IWebShellUser | undefined>;
-  onBeforeSignOutAsync: () => Promise<boolean>;
   iconColor?: string;
+  authentication?: {
+    usernameType: TextboxTypes;
+    onSignInAsync: (credentials: IWebShellCredentials) => Promise<IWebShellUser | undefined>;
+    onBeforeSignOutAsync: () => Promise<boolean>;
+    hideSignOut?: boolean;
+  };
 }
 
 export default class WebShell<TMenuId> extends PureComponent<IProps<TMenuId>> {
   static contextType = WebShellUserContext;
-  context!: React.ContextType<typeof WebShellUserContext>;
+  context: React.ContextType<typeof WebShellUserContext>;
+
+  private get supportsAuthentication() {
+    return this.props.authentication ? true : false;
+  }
+
   render(): ReactNode {
-    const { user } = this.context as WebShellUserContextType;
-    return user ? (
-      this.signedInUI
-    ) : (
-      <div className={styles.signedOut}>
-        {' '}
-        <SignedOut {...this.props} />
-      </div>
-    );
+    if (this.supportsAuthentication) {
+      const { user } = this.context as WebShellUserContextType;
+      return user ? (
+        this.signedInUI
+      ) : (
+        <div className={styles.signedOut}>
+          {' '}
+          <SignedOut {...this.props.authentication!} />
+        </div>
+      );
+    } else {
+      return this.signedInUI;
+    }
   }
 
   private get menuItems(): MenuItem<string>[] {
@@ -41,7 +52,7 @@ export default class WebShell<TMenuId> extends PureComponent<IProps<TMenuId>> {
       menuItem.id = ++id + '';
       return menuItem;
     });
-    if (this.props.hideSignOut !== true) {
+    if (this.props.authentication && this.props.authentication.hideSignOut !== true) {
       menuItems.push({
         id: ++id + '',
         node: (
@@ -49,7 +60,7 @@ export default class WebShell<TMenuId> extends PureComponent<IProps<TMenuId>> {
             buttonType="negative"
             className={styles.signOutButton}
             onClick={async () => {
-              if (await this.props.onBeforeSignOutAsync()) {
+              if (await this.props.authentication!.onBeforeSignOutAsync()) {
                 const { logout } = this.context as WebShellUserContextType;
                 logout();
               }
@@ -64,7 +75,13 @@ export default class WebShell<TMenuId> extends PureComponent<IProps<TMenuId>> {
   }
 
   private get signedInUI(): ReactNode {
-    const { logout } = this.context as WebShellUserContextType;
+    const { logout } = this.supportsAuthentication
+      ? (this.context as WebShellUserContextType)
+      : {
+          logout: () => {
+            throw new Error('Authentication support has not been configured');
+          },
+        };
     return (
       <div className={styles.container}>
         <WebShellHamburgerMenu
