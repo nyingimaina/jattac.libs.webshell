@@ -19,19 +19,22 @@ export class WebShellButton extends Component<WebShellButtonProps> {
       buttonType === 'positive'
         ? styles.formButtonPositive
         : buttonType === 'negative'
-        ? styles.formButtonNegative
-        : styles.formButtonNeutral
+          ? styles.formButtonNegative
+          : styles.formButtonNeutral
     } ${className ? className : ''}`; // Combine with custom className if provided
 
     // Apply disabled styling if necessary
-    const finalClass = disabled
-      ? `${buttonClass} ${styles.formButtonDisabled}`
-      : buttonClass;
+    const finalClass = disabled ? `${buttonClass} ${styles.formButtonDisabled}` : buttonClass;
 
     return (
       <button
         className={finalClass.trim()} // Ensure no extra spaces
-        onClick={onClick}
+        onClick={(event) => {
+          event.stopPropagation();
+          if (this.props.onClick) {
+            this.props.onClick();
+          }
+        }}
         disabled={disabled}
       >
         {children}
