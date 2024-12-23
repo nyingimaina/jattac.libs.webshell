@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import styles from './WebShellTextBox.module.css'; // Ensure this is the correct path to your CSS module.
 import TextboxTypes from './TextboxTypes';
 

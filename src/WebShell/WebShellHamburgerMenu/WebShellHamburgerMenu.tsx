@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { CSSProperties, ReactNode } from 'react';
 import styles from './WebShellHamburgerMenu.module.css';
 
 export type MenuItem<TId> = {
@@ -20,6 +20,11 @@ type WebShellHamburgerMenuProps<TId> = {
   iconColor?: string;
 
   hideSearch?: boolean;
+  overrides?: {
+    menuOpened?: {
+      left?: string;
+    };
+  };
 };
 
 type WebShellHamburgerMenuState<TId> = {
@@ -51,6 +56,18 @@ class WebShellHamburgerMenu<TId> extends React.Component<
     };
     this.menuRef = React.createRef(); // Initialize the ref for the menu
     this.searchInputRef = React.createRef(); // Initialize the ref for the search input
+  }
+
+  private get menuLeftOverride(): CSSProperties {
+    if (this.state.isOpen !== true) {
+      return {};
+    }
+    if (!this.props.overrides || !this.props.overrides.menuOpened || !this.props.overrides.menuOpened.left) {
+      return {};
+    } else {
+      const left = this.props.overrides!.menuOpened!.left!;
+      return { left: left };
+    }
   }
 
   componentDidMount() {
@@ -269,7 +286,7 @@ class WebShellHamburgerMenu<TId> extends React.Component<
         <ul
           ref={this.menuRef} // Attach the ref to the menu
           className={`${styles.menu} ${isOpen ? styles.open : styles.collapsed}`} // Add collapsed class
-          style={{ backgroundColor }}
+          style={{ ...{ backgroundColor: backgroundColor }, ...this.menuLeftOverride }}
         >
           {isOpen && (
             <li className={styles.menuItem}>

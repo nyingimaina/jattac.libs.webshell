@@ -19,6 +19,11 @@ interface IProps<TMenuId> {
     onBeforeSignOutAsync: () => Promise<boolean>;
     hideSignOut?: boolean;
   };
+  overrides?: {
+    menuOpened?: {
+      left?: string;
+    };
+  };
 }
 
 export default class WebShell<TMenuId> extends PureComponent<IProps<TMenuId>> {
