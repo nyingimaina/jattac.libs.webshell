@@ -213,6 +213,10 @@ class WebShellHamburgerMenu<TId> extends React.Component<
     }
   }
 
+  private get isSearching(): boolean {
+    return this.state.searchQuery ? true : false;
+  }
+
   renderMenuItems(items?: MenuItem<TId>[]) {
     if (!items) {
       return null;
@@ -235,7 +239,7 @@ class WebShellHamburgerMenu<TId> extends React.Component<
         this.knownIds.push(item.id!);
       }
       const hasChildren = !!item.children;
-      const isOpen = this.state.openSubmenuIndex === index;
+      const isOpen = this.state.openSubmenuIndex === index || this.isSearching;
       const isHovered = this.state.hoveredId === item.id; // Check if the item is hovered
 
       return (
