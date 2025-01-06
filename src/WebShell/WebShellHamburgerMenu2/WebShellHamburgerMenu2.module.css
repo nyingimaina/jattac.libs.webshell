@@ -5,3 +5,8 @@
   border: solid 1px #dfdfdf;
   height: 100%;
 }
+
+.hamburgerMenu.open {
+  width: auto;
+  background-color: #fff;
+}

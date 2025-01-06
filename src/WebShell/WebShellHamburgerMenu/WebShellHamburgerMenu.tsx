@@ -19,6 +19,7 @@ export type WebShellHamburgerMenuProps<TId> = {
   onItemClick: (args: { id: TId; hasChildren: boolean }) => void; // Callback for when a menu item is clicked
   iconColor?: string;
   hideSearch?: boolean;
+  isOpen?: boolean;
   overrides?: {
     top?: number;
     menuOpened?: {
