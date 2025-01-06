@@ -14,13 +14,13 @@ export type MenuItem<TId> = {
   children?: MenuItem<TId>[];
 };
 
-type WebShellHamburgerMenuProps<TId> = {
+export type WebShellHamburgerMenuProps<TId> = {
   items: MenuItem<TId>[];
   onItemClick: (args: { id: TId; hasChildren: boolean }) => void; // Callback for when a menu item is clicked
   iconColor?: string;
-
   hideSearch?: boolean;
   overrides?: {
+    top?: number;
     menuOpened?: {
       left?: string;
     };
