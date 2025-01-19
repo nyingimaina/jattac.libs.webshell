@@ -7,6 +7,7 @@ import IWebShellCredentials from '../SignedOut/Data/IWebShellCredentials';
 import IWebShellUser from '../SignedOut/Data/IWebShellUser';
 import TextboxTypes from '../Textbox/TextboxTypes';
 import WebShellButton from '../Buttons/WebShellButton';
+import WebShellHamburgerMenu2 from '../WebShellHamburgerMenu2/WebShellHamburgerMenu2';
 
 interface IProps<TMenuId> {
   children: ReactNode;
@@ -24,6 +25,7 @@ interface IProps<TMenuId> {
       left?: string;
     };
   };
+  menuVersion: '1' | '2';
 }
 
 export default class WebShell<TMenuId> extends PureComponent<IProps<TMenuId>> {
@@ -89,15 +91,27 @@ export default class WebShell<TMenuId> extends PureComponent<IProps<TMenuId>> {
         };
     return (
       <div className={styles.container}>
-        <WebShellHamburgerMenu
-          onItemClick={(e) => {
-            if (e.id === 'logout') {
-              logout();
-            }
-          }}
-          items={this.menuItems}
-          {...this.props}
-        />
+        {this.props.menuVersion == '1' ? (
+          <WebShellHamburgerMenu
+            onItemClick={(e) => {
+              if (e.id === 'logout') {
+                logout();
+              }
+            }}
+            items={this.menuItems}
+            {...this.props}
+          />
+        ) : (
+          <WebShellHamburgerMenu2
+            onItemClick={(e) => {
+              if (e.id === 'logout') {
+                logout();
+              }
+            }}
+            items={this.menuItems}
+            {...this.props}
+          />
+        )}
         <div className={styles.workspace}>{this.props.children}</div>
       </div>
     );

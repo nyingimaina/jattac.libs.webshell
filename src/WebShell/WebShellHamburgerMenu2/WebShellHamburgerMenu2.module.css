@@ -1,0 +1,12 @@
+.hamburgerMenu {
+  position: fixed; /* Keep the menu fixed on the left */
+  width: 70px;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+  border: solid 1px #dfdfdf;
+  height: 100%;
+}
+
+.hamburgerMenu.open {
+  width: auto;
+  background-color: #fff;
+}
