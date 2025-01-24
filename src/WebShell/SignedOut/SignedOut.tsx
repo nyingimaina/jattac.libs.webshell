@@ -46,53 +46,53 @@ export default class SignedOut extends PureComponent<IProps, IState> {
     return (
       <div className={`${styles.formWidth} ${formStyles.formContainer}`}>
         <h2 className={formStyles.formTitle}>Sign In</h2>
-        
-          <label className={formStyles.formLabel} htmlFor="name">
-            Username
-          </label>
-          <WebShellTextBox
-            onChange={(e) => {
-              this.setState({
-                credentials: {
-                  username: e.target.value,
-                  password: this.state.credentials.password,
-                },
-              });
-            }}
-            type={this.props.usernameType}
-            value={this.state.credentials.username}
-            placeholder="Enter your username or email"
-            required={true}
-          />
 
-          <label className={formStyles.formLabel} htmlFor="email">
-            Password
-          </label>
-          <WebShellTextBox
-            onChange={(e) => {
-              this.setState({
-                credentials: {
-                  username: this.state.credentials.username,
-                  password: e.target.value,
-                },
-              });
-            }}
-            type="password"
-            value={this.state.credentials.password}
-            placeholder="Enter your password"
-            required={true}
-          />
+        <label className={formStyles.formLabel} htmlFor="name">
+          Username
+        </label>
+        <WebShellTextBox
+          onChange={(e) => {
+            this.setState({
+              credentials: {
+                username: e.target.value,
+                password: this.state.credentials.password,
+              },
+            });
+          }}
+          type={this.props.usernameType}
+          value={this.state.credentials.username}
+          placeholder="Enter your username or email"
+          required={true}
+        />
 
-          <div className={formStyles.buttonBar}>
-            <WebShellButton
-              buttonType="positive"
-              disabled={this.canSubmit === true ? false : true}
-              onClick={async () => await this.handleLogin()}
-            >
-              Sign In
-            </WebShellButton>
-          </div>
-        
+        <label className={formStyles.formLabel} htmlFor="email">
+          Password
+        </label>
+        <WebShellTextBox
+          onChange={(e) => {
+            this.setState({
+              credentials: {
+                username: this.state.credentials.username,
+                password: e.target.value,
+              },
+            });
+          }}
+          type="password"
+          value={this.state.credentials.password}
+          placeholder="Enter your password"
+          required={true}
+        />
+
+        <div className={formStyles.buttonBar}>
+          <WebShellButton
+            buttonType="positive"
+            disabled={this.canSubmit === true ? false : true}
+            onClick={async () => await this.handleLogin()}
+            isDefault={true}
+          >
+            Sign In
+          </WebShellButton>
+        </div>
       </div>
     );
   }
