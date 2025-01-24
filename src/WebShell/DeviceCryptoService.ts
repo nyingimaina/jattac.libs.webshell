@@ -8,16 +8,27 @@ export class DeviceCryptoService {
   }
 
   private async generateDeviceFingerprint(): Promise<string> {
-    // Collect device-specific identifiers
-    const userAgent = navigator.userAgent;
-    const screenResolution = `${screen.width}x${screen.height}`;
-    const language = navigator.language;
-    const hardwareConcurrency = navigator.hardwareConcurrency || 1;
-    const deviceMemory = (navigator as any).deviceMemory || 4; // Fallback to 4GB if unavailable).toString();
+    // Collect only hardware-specific and immutable properties
+    const hardwareConcurrency = navigator.hardwareConcurrency || 4; // Number of CPU cores
+    const maxTouchPoints = navigator.maxTouchPoints || 0; // Touchscreen capability
+    const colorDepth = screen.colorDepth || 24; // Display color depth in bits
+    const devicePixelRatio = window.devicePixelRatio || 1; // Physical pixel ratio, tied to the display
 
-    // Combine all information into a fingerprint
-    const fingerprint = `${userAgent}-${screenResolution}-${language}-${hardwareConcurrency}-${deviceMemory}`;
-    return fingerprint;
+    // Combine these stable properties into a raw fingerprint
+    const rawFingerprint = `${hardwareConcurrency}-${maxTouchPoints}-${colorDepth}-${devicePixelRatio}`;
+    const hashedFingerprint = await this.hashFingerprint(rawFingerprint);
+
+    return hashedFingerprint;
+  }
+
+  private async hashFingerprint(fingerprint: string): Promise<string> {
+    // Use SubtleCrypto API for secure and fast hashing
+    const encoder = new TextEncoder();
+    const data = encoder.encode(fingerprint);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(hashBuffer))
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('');
   }
 
   private async deriveKey(fingerprint: string): Promise<CryptoKey> {
