@@ -1,6 +1,21 @@
 // contexts/UserContext.tsx
 import React, { createContext, ReactNode } from 'react';
 import IWebShellUser from '../SignedOut/Data/IWebShellUser';
+import { DeviceCryptoService } from '../DeviceCryptoService';
+
+const userKey = 'user';
+
+const getUserFromLocalStorageAsync = async (): Promise<IWebShellUser | null> => {
+  try {
+    const encryptedUserString = localStorage.getItem(userKey);
+    const user = (await new DeviceCryptoService().decrypt(encryptedUserString || '')) as IWebShellUser;
+    return user;
+  } catch {
+    return null;
+  }
+};
+
+export { getUserFromLocalStorageAsync };
 
 // Define the context value type
 export interface WebShellUserContextType {
@@ -28,23 +43,25 @@ export class UserProvider extends React.Component<UserProviderProps, WebShellUse
     };
   }
 
-  componentDidMount() {
-    const storedUser = localStorage.getItem('user');
+  async componentDidMount() {
+    const storedUser = await getUserFromLocalStorageAsync();
     if (storedUser) {
-      this.setState({ user: JSON.parse(storedUser) });
+      this.setState({ user: storedUser });
     }
   }
 
   // Login method
   login = (userData: IWebShellUser) => {
     this.setState({ user: userData });
-    localStorage.setItem('user', JSON.stringify(userData));
+    new DeviceCryptoService()
+      .encrypt(userData)
+      .then((encryptedUserString) => localStorage.setItem(userKey, encryptedUserString));
   };
 
   // Logout method
   logout = () => {
     this.setState({ user: null });
-    localStorage.removeItem('user');
+    localStorage.removeItem(userKey);
   };
 
   render() {

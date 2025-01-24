@@ -2,6 +2,7 @@ import WebShellButton from './WebShell/Buttons/WebShellButton';
 import WebShell from './WebShell/SignedIn/WebShell';
 import WebShellUserService from './WebShell/SignedIn/WebShellUserService';
 import {
+  getUserFromLocalStorageAsync,
   UserProvider,
   WebShellUserContext,
   WebShellUserContextType,
@@ -20,4 +21,5 @@ export {
   WebShell,
   UserProvider,
   MenuItem,
+  getUserFromLocalStorageAsync,
 };
