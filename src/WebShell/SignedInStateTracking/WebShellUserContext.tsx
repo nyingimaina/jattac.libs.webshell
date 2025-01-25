@@ -22,6 +22,7 @@ export interface WebShellUserContextType {
   user: IWebShellUser | null;
   login: (userData: IWebShellUser) => void;
   logout: () => void;
+  isInitialized: boolean;
 }
 
 // Create the context with a default value (use null assertions since it will be provided later)
@@ -40,22 +41,21 @@ export class UserProvider extends React.Component<UserProviderProps, WebShellUse
       user: null,
       login: this.login,
       logout: this.logout,
+      isInitialized: false,
     };
   }
 
   async componentDidMount() {
     const storedUser = await getUserFromLocalStorageAsync();
-    if (storedUser) {
-      this.setState({ user: storedUser });
-    }
+    this.setState({ user: storedUser, isInitialized: true });
   }
 
   // Login method
   login = (userData: IWebShellUser) => {
     this.setState({ user: userData });
-    new DeviceCryptoService()
-      .encrypt(userData)
-      .then((encryptedUserString) => localStorage.setItem(userKey, encryptedUserString));
+    new DeviceCryptoService().encrypt(userData).then((encryptedUserString) => {
+      localStorage.setItem(userKey, encryptedUserString);
+    });
   };
 
   // Logout method

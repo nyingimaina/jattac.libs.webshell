@@ -10,6 +10,7 @@ import TextboxTypes from '../Textbox/TextboxTypes';
 
 interface IProps {
   onSignInAsync: (credentials: IWebShellCredentials) => Promise<IWebShellUser | undefined>;
+  onAfterSuccessfulSignInAsync?: (user: IWebShellUser) => Promise<void>;
   usernameType: TextboxTypes;
 }
 
@@ -35,6 +36,9 @@ export default class SignedOut extends PureComponent<IProps, IState> {
     const signInResult = await this.props.onSignInAsync(this.state.credentials);
     if (signInResult) {
       login(signInResult);
+      if (this.props.onAfterSuccessfulSignInAsync) {
+        await this.props.onAfterSuccessfulSignInAsync(signInResult);
+      }
     }
   };
 

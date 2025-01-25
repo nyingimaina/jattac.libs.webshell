@@ -17,7 +17,8 @@ interface IProps<TMenuId> {
   authentication?: {
     usernameType: TextboxTypes;
     onSignInAsync: (credentials: IWebShellCredentials) => Promise<IWebShellUser | undefined>;
-    onBeforeSignOutAsync: () => Promise<boolean>;
+    onAfterSuccessfulSignInAsync?: (user: IWebShellUser) => Promise<void>;
+    onBeforeSignOutAsync?: () => Promise<boolean>;
     hideSignOut?: boolean;
   };
   overrides?: {
@@ -67,7 +68,10 @@ export default class WebShell<TMenuId> extends PureComponent<IProps<TMenuId>> {
             buttonType="negative"
             className={styles.signOutButton}
             onClick={async () => {
-              if (await this.props.authentication!.onBeforeSignOutAsync()) {
+              const signOutAllowed = this.props.authentication!.onBeforeSignOutAsync
+                ? await this.props.authentication!.onBeforeSignOutAsync()
+                : true;
+              if (signOutAllowed) {
                 const { logout } = this.context as WebShellUserContextType;
                 logout();
               }
