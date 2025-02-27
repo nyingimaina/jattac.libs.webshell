@@ -1,6 +1,6 @@
 {
   "name": "jattac.libs.webshell",
-  "version": "0.2.4",
+  "version": "0.3.1",
   "description": "Simple authentication screen and navigation UI for React",
   "main": "dist/index.js",
   "module": "dist/index.es.js",

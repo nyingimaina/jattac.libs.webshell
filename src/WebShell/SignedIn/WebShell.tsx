@@ -21,12 +21,14 @@ interface IProps<TMenuId> {
     onBeforeSignOutAsync?: () => Promise<boolean>;
     hideSignOut?: boolean;
   };
+  isOpen?: boolean;
   overrides?: {
+    top?: number;
     menuOpened?: {
       left?: string;
     };
   };
-  menuVersion: '1' | '2';
+  menuVersion: 'Inbuilt' | 'BlankSlate';
 }
 
 export default class WebShell<TMenuId> extends PureComponent<IProps<TMenuId>> {
@@ -95,7 +97,7 @@ export default class WebShell<TMenuId> extends PureComponent<IProps<TMenuId>> {
         };
     return (
       <div className={styles.container}>
-        {this.props.menuVersion == '1' ? (
+        {this.props.menuVersion == 'Inbuilt' ? (
           <WebShellHamburgerMenu
             onItemClick={(e) => {
               if (e.id === 'logout') {
