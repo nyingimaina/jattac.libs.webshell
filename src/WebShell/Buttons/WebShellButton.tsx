@@ -11,7 +11,17 @@ interface WebShellButtonProps {
   isDefault?: boolean;
 }
 
-export class WebShellButton extends Component<WebShellButtonProps> {
+interface IState {
+  isWorking: boolean;
+}
+export class WebShellButton extends Component<WebShellButtonProps, IState> {
+  constructor(props: WebShellButtonProps) {
+    super(props);
+    this.state = {
+      isWorking: false,
+    };
+  }
+
   componentDidMount() {
     if (this.props.isDefault) {
       // Add the event listener for Enter key when the component is mounted
@@ -54,13 +64,21 @@ export class WebShellButton extends Component<WebShellButtonProps> {
     return (
       <button
         className={finalClass.trim()} // Ensure no extra spaces
-        onClick={(event) => {
+        onClick={async (event) => {
           event.stopPropagation();
           if (this.props.onClick) {
-            this.props.onClick();
+            if (this.state.isWorking) {
+              return;
+            }
+            try {
+              this.setState({ isWorking: true });
+              await this.props.onClick();
+            } finally {
+              this.setState({ isWorking: false });
+            }
           }
         }}
-        disabled={disabled}
+        disabled={disabled || this.state.isWorking}
       >
         {children}
       </button>
