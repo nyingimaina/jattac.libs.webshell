@@ -10,7 +10,7 @@ type WebShellTextBoxProps = {
   disabled?: boolean;
   width?: string; // Optional width prop
   required?: boolean; // Optional required prop
-
+  autoFocus?: boolean;
   suffixElement?: ReactNode;
   prefixElement?: ReactNode;
 };
@@ -95,6 +95,7 @@ class WebShellTextBox extends React.Component<WebShellTextBoxProps, WebShellText
           onBlur={this.handleBlur} // Trigger validation on blur
           disabled={disabled}
           required={required}
+          autoFocus={this.props.autoFocus}
           style={{
             paddingRight: this.props.suffixElement ? '2rem' : '', // Add some padding to avoid overlap
             paddingLeft: this.props.prefixElement ? '2rem' : '',
