@@ -4,14 +4,24 @@ import styles from './WebShellButton.module.css';
 
 interface WebShellButtonProps {
   buttonType: 'positive' | 'negative' | 'neutral';
-  onClick?: () => void;
+  onClick?: () => void | Promise<void>;
   disabled?: boolean;
   children: React.ReactNode;
   className?: string; // Allow users to pass their own styles
   isDefault?: boolean;
 }
 
-export class WebShellButton extends Component<WebShellButtonProps> {
+interface IState {
+  isWorking: boolean;
+}
+export class WebShellButton extends Component<WebShellButtonProps, IState> {
+  constructor(props: WebShellButtonProps) {
+    super(props);
+    this.state = {
+      isWorking: false,
+    };
+  }
+
   componentDidMount() {
     if (this.props.isDefault) {
       // Add the event listener for Enter key when the component is mounted
@@ -24,17 +34,31 @@ export class WebShellButton extends Component<WebShellButtonProps> {
     document.removeEventListener('keydown', this.handleKeyDown);
   }
 
-  handleKeyDown = (event: KeyboardEvent) => {
-    const { isDefault, onClick, disabled } = this.props;
+  handleKeyDown = async (event: KeyboardEvent) => {
+    const { isDefault, disabled } = this.props;
 
     // If the Enter key is pressed and the button is enabled and isDefault is true
     if (isDefault && event.key === 'Enter' && !disabled) {
       event.preventDefault(); // Prevent default action (form submission if inside a form)
-      if (onClick) {
-        onClick(); // Trigger the button's onClick handler
-      }
+      await this.handleClickAsync();
     }
   };
+
+  async handleClickAsync() {
+    if (this.state.isWorking) {
+      return;
+    }
+    const { onClick } = this.props;
+    if (onClick) {
+      try {
+        this.setState({ isWorking: true });
+
+        await onClick(); // Trigger the button's onClick handler
+      } finally {
+        this.setState({ isWorking: false });
+      }
+    }
+  }
 
   render() {
     const { buttonType, disabled, children, className } = this.props;
@@ -54,13 +78,11 @@ export class WebShellButton extends Component<WebShellButtonProps> {
     return (
       <button
         className={finalClass.trim()} // Ensure no extra spaces
-        onClick={(event) => {
+        onClick={async (event) => {
           event.stopPropagation();
-          if (this.props.onClick) {
-            this.props.onClick();
-          }
+          await this.handleClickAsync();
         }}
-        disabled={disabled}
+        disabled={disabled || this.state.isWorking}
       >
         {children}
       </button>
