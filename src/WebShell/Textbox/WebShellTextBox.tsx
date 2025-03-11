@@ -5,7 +5,7 @@ import TextboxTypes from './TextboxTypes';
 type WebShellTextBoxProps = {
   type: TextboxTypes;
   placeholder?: string;
-  value: string;
+  value?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   width?: string; // Optional width prop
@@ -88,7 +88,7 @@ class WebShellTextBox extends React.Component<WebShellTextBoxProps, WebShellText
         <input
           ref={this.inputRef} // Attach the ref to the input
           className={styles.textBox}
-          type={type}
+          type={this.effectiveTextboxType}
           placeholder={placeholder}
           value={value}
           onChange={this.handleInput}
@@ -99,7 +99,7 @@ class WebShellTextBox extends React.Component<WebShellTextBoxProps, WebShellText
             paddingRight: this.props.suffixElement ? '2rem' : '', // Add some padding to avoid overlap
             paddingLeft: this.props.prefixElement ? '2rem' : '',
           }}
-          pattern={type === 'email' ? '[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$' : undefined} // Set pattern conditionally
+          pattern={this.effectiveTextboxType === 'email' ? '[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$' : undefined} // Set pattern conditionally
         />
         {hasInteracted && !isValid && (
           <span className={`${styles.validationMessage} ${!isValid ? styles.show : ''}`}>

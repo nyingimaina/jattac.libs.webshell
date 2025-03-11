@@ -4,7 +4,7 @@ import styles from './WebShellButton.module.css';
 
 interface WebShellButtonProps {
   buttonType: 'positive' | 'negative' | 'neutral';
-  onClick?: () => void;
+  onClick?: () => void | Promise<void>;
   disabled?: boolean;
   children: React.ReactNode;
   className?: string; // Allow users to pass their own styles
@@ -34,17 +34,31 @@ export class WebShellButton extends Component<WebShellButtonProps, IState> {
     document.removeEventListener('keydown', this.handleKeyDown);
   }
 
-  handleKeyDown = (event: KeyboardEvent) => {
-    const { isDefault, onClick, disabled } = this.props;
+  handleKeyDown = async (event: KeyboardEvent) => {
+    const { isDefault, disabled } = this.props;
 
     // If the Enter key is pressed and the button is enabled and isDefault is true
     if (isDefault && event.key === 'Enter' && !disabled) {
       event.preventDefault(); // Prevent default action (form submission if inside a form)
-      if (onClick) {
-        onClick(); // Trigger the button's onClick handler
-      }
+      await this.handleClickAsync();
     }
   };
+
+  async handleClickAsync() {
+    if (this.state.isWorking) {
+      return;
+    }
+    const { onClick } = this.props;
+    if (onClick) {
+      try {
+        this.setState({ isWorking: true });
+
+        await onClick(); // Trigger the button's onClick handler
+      } finally {
+        this.setState({ isWorking: false });
+      }
+    }
+  }
 
   render() {
     const { buttonType, disabled, children, className } = this.props;
@@ -66,17 +80,7 @@ export class WebShellButton extends Component<WebShellButtonProps, IState> {
         className={finalClass.trim()} // Ensure no extra spaces
         onClick={async (event) => {
           event.stopPropagation();
-          if (this.props.onClick) {
-            if (this.state.isWorking) {
-              return;
-            }
-            try {
-              this.setState({ isWorking: true });
-              await this.props.onClick();
-            } finally {
-              this.setState({ isWorking: false });
-            }
-          }
+          await this.handleClickAsync();
         }}
         disabled={disabled || this.state.isWorking}
       >
